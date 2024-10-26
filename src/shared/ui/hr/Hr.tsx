@@ -1,3 +1,3 @@
 export function Hr() {
-	return <hr />
+	return <hr className={'w-48 mx-auto bg-black h-px'} />
 }
