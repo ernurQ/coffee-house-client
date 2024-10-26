@@ -2,10 +2,7 @@ export interface ICoffee {
 	id: string
 	thumbnail: string
 	name: string
-	country: string
+	countryName: string
 	price: number
-}
-
-export interface ICoffeeFull extends ICoffee {
 	description: string
 }
