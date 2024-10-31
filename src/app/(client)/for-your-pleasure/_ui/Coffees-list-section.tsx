@@ -1,9 +1,19 @@
-import { CoffeesList } from '@/entities/coffee'
+import { unstable_cache } from 'next/cache'
 
-export function CoffeesListSection() {
+import { CoffeesList, getPleasureCoffeesList } from '@/entities/coffee'
+import { ICoffee } from '@/entities/coffee/model/coffee.model'
+
+const getCoffees = unstable_cache<() => Promise<ICoffee[]>>(
+	() => getPleasureCoffeesList().then((res) => res.data.coffees),
+	['pleasure-coffees'],
+)
+
+export async function CoffeesListSection() {
+	const coffees = await getCoffees()
+
 	return (
-		<section>
-			<div>Coffees list section</div> <CoffeesList coffees={[]} />
+		<section className={'pt-[60px] pb-[30px]'}>
+			<CoffeesList coffees={coffees} />
 		</section>
 	)
 }

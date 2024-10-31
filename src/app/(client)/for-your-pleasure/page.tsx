@@ -6,7 +6,11 @@ export default function ForYourPleasurePage() {
 	return (
 		<>
 			<Header />
-			<main>
+			<main
+				className={
+					'px-8 sm:px-20 md:px-16 lg:px-40 xl:px-64 2xl:px-80 bg-white'
+				}
+			>
 				<AboutGoodsSection />
 				<Hr />
 				<CoffeesListSection />
