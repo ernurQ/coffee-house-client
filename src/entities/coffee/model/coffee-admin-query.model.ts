@@ -6,3 +6,7 @@ export interface ICreateCoffee {
 }
 
 export type IUpdateCoffee = Partial<ICreateCoffee>
+
+export interface IUploadCoffeeThumbnail {
+	thumbnail: File
+}

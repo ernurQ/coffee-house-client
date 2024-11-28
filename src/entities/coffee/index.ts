@@ -8,6 +8,7 @@ export {
 	revalidateTag,
 	createCoffee,
 	updateCoffee,
+	uploadCoffeeThumbnail,
 } from './api/coffees-admin-api'
 
 export { CoffeesList } from './ui/Coffees-list'

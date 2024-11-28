@@ -7,11 +7,19 @@ import toast from 'react-hot-toast'
 
 import { Spinner } from '@/shared/ui'
 
-import { getOneCoffee, updateCoffee } from '@/entities/coffee'
+import {
+	getOneCoffee,
+	updateCoffee,
+	uploadCoffeeThumbnail,
+} from '@/entities/coffee'
 import { ICoffee } from '@/entities/coffee/model/coffee.model'
 import { useGetCountriesQuery } from '@/entities/country'
 
 type Inputs = Partial<Omit<ICoffee, 'id' | 'thumbnail'>>
+
+type ThumbnailInputs = {
+	thumbnail: FileList
+}
 
 interface Props {
 	params: { id: string }
@@ -48,11 +56,31 @@ export default function AdminCoffeePage({ params: { id } }: Props) {
 		},
 	})
 
+	const { mutate: upload } = useMutation({
+		mutationFn: (thumbnail: File) => uploadCoffeeThumbnail(id, { thumbnail }),
+		onMutate: () => {
+			toast.loading('Uploading', { id: 'upload-loading' })
+		},
+		onSuccess: () => {
+			toast.dismiss('upload-loading')
+			toast.success('Uploaded successfully')
+		},
+		onError: ({ status }: AxiosError) => {
+			toast.dismiss('upload-loading')
+			toast.error(`Could not upload. Status: ${status}`)
+		},
+	})
+
 	const {
 		handleSubmit,
 		register,
 		formState: { isDirty },
 	} = useForm<Inputs>()
+
+	const {
+		handleSubmit: handleThumbnailSubmit,
+		register: registerThumbnailInput,
+	} = useForm<ThumbnailInputs>()
 
 	const onSubmit = (values: Inputs) => {
 		if (!isDirty || !coffee) return
@@ -64,12 +92,34 @@ export default function AdminCoffeePage({ params: { id } }: Props) {
 		update(values)
 	}
 
+	const onThumbnailSubmit = (values: ThumbnailInputs) => {
+		const thumbnail = values.thumbnail[0]
+		upload(thumbnail)
+	}
+
 	if (isPending || isCountriesPending) return <Spinner className={'mt-10'} />
 	if (isError || isCountriesError)
 		throw new Error('Error in component AdminCoffeePage')
 
 	return (
-		<section className={'py-10 px-8 flex justify-center'}>
+		<section className={'py-10 px-8 flex flex-col items-center'}>
+			<form onSubmit={handleThumbnailSubmit(onThumbnailSubmit)}>
+				<input
+					type='file'
+					accept='image/*'
+					{...registerThumbnailInput('thumbnail', {
+						required: 'Please select an image file',
+					})}
+				/>
+				<input
+					type={'submit'}
+					value={'Update thumbnail'}
+					className={'block mx-auto text-center mt-14 border rounded px-4 py-1'}
+				/>
+			</form>
+
+			<hr className={'my-5'} />
+
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<label className={'grid'}>
 					Coffee name

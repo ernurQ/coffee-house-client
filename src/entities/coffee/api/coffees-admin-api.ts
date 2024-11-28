@@ -2,7 +2,11 @@ import axios from 'axios'
 
 import { coffeeHouseAdminApi } from '@/shared/api'
 
-import { ICreateCoffee, IUpdateCoffee } from '../model/coffee-admin-query.model'
+import {
+	ICreateCoffee,
+	IUpdateCoffee,
+	IUploadCoffeeThumbnail,
+} from '../model/coffee-admin-query.model'
 import { ICoffee } from '../model/coffee.model'
 
 export function createCoffee(body: ICreateCoffee) {
@@ -13,7 +17,14 @@ export function updateCoffee(id: string, data: IUpdateCoffee) {
 	return coffeeHouseAdminApi.put<ICoffee>(`/coffees/${id}`, data)
 }
 
-// TODO: add uploadCoffeeThumbnail feature
+export function uploadCoffeeThumbnail(
+	id: string,
+	data: IUploadCoffeeThumbnail,
+) {
+	return coffeeHouseAdminApi.post(`/coffees/${id}/thumbnail`, data, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	})
+}
 
 export function revalidateTag(tag: string) {
 	return axios.patch('/api/revalidate-tag', undefined, { params: { tag } })
