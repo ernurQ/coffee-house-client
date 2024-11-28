@@ -6,7 +6,7 @@ import { ICoffee } from '@/entities/coffee/model/coffee.model'
 
 const getCoffees = unstable_cache<() => Promise<ICoffee[]>>(
 	() => getBestCoffeesList().then((res) => res.data.coffees),
-	['best-coffees'],
+	['best'],
 )
 
 export async function OurBestSection() {

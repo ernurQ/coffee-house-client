@@ -9,6 +9,7 @@ export {
 	createCoffee,
 	updateCoffee,
 	uploadCoffeeThumbnail,
+	addCoffeesToCollection,
 } from './api/coffees-admin-api'
 
 export { CoffeesList } from './ui/Coffees-list'

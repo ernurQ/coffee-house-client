@@ -5,7 +5,7 @@ import { ICoffee } from '@/entities/coffee/model/coffee.model'
 
 const getCoffees = unstable_cache<() => Promise<ICoffee[]>>(
 	() => getPleasureCoffeesList().then((res) => res.data.coffees),
-	['pleasure-coffees'],
+	['pleasure'],
 )
 
 export async function CoffeesListSection() {

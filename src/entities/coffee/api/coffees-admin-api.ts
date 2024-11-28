@@ -26,6 +26,13 @@ export function uploadCoffeeThumbnail(
 	})
 }
 
-export function revalidateTag(tag: string) {
+export function addCoffeesToCollection(
+	ids: string[],
+	collection: 'best' | 'pleasure',
+) {
+	return coffeeHouseAdminApi.post(`/coffees-lists/${collection}`, { ids })
+}
+
+export function revalidateTag(tag: 'pleasure' | 'best') {
 	return axios.patch('/api/revalidate-tag', undefined, { params: { tag } })
 }
