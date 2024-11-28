@@ -33,6 +33,15 @@ export function addCoffeesToCollection(
 	return coffeeHouseAdminApi.post(`/coffees-lists/${collection}`, { ids })
 }
 
+export function removeCoffeesFromCollection(
+	ids: string[],
+	collection: 'best' | 'pleasure',
+) {
+	return coffeeHouseAdminApi.delete(`/coffees-lists/${collection}`, {
+		data: { ids },
+	})
+}
+
 export function revalidateTag(tag: 'pleasure' | 'best') {
 	return axios.patch('/api/revalidate-tag', undefined, { params: { tag } })
 }
